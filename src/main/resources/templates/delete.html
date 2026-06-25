@@ -274,7 +274,7 @@
             <form method="post" th:action="@{/deletefacultyfromtable}">
                 <div class="form-group">
                     <label for="facultyids">Faculty IDs</label>
-                    <textarea id="facultyids" class="form-control" rows="2" placeholder="F201, F202, F203" required></textarea>
+                    <textarea name="facultyid" id="facultyids" class="form-control" rows="2" placeholder="F201, F202, F203" required></textarea>
                     <span class="hint">Use commas to separate multiple IDs.</span>
                 </div>
                 <button type="submit" class="btn btn-delete">Remove Faculties</button>
@@ -283,10 +283,10 @@
 
         <div class="card">
             <h2>🗑️ Remove Branches</h2>
-            <form>
+            <form method="post" th:action="@{/deletebranchfromtable}">
                 <div class="form-group">
                     <label for="branchids">Branch IDs</label>
-                    <textarea  id="branchids" class="form-control" rows="2" placeholder="B301, B302" required></textarea>
+                    <textarea name="branchids"  id="branchids" class="form-control" rows="2" placeholder="B301, B302" required></textarea>
                     <span class="hint">Use commas to separate multiple IDs.</span>
                 </div>
                 <button type="submit" class="btn btn-delete">Remove Branches</button>

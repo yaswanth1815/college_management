@@ -41,7 +41,12 @@ public class FacultyService {
                 notdele=notdele+" "+id;
             }
         }
-        if(count1>0)
+        if(count1>0){
+            mainStr=mainStr+" Deleted ID's:" +dele;
+        }
+        else{
+            mainStr=mainStr+" Not Deleted ID's"+notdele;
+        }
         return mainStr;
     }
 }

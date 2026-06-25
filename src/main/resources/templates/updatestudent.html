@@ -31,6 +31,8 @@
         .btn-submit { background-color: var(--theme); color: white; }
         .btn-back { background-color: #eceff1; color: #37474f; }
         :root[data-theme="dark"] .btn-back { background-color: #374151; color: #e5e7eb; }
+        .update-message {text-align: center;color:#2563eb;;font-weight: 600;font-size: 16px;margin: 15px 0;}
+        
         @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } }
     </style>
 </head>
@@ -44,12 +46,13 @@
         <form id="studentForm">
             <div class="form-grid">
                 <div class="form-group full-width"><label for="studentid">Roll Number</label><input type="text" id="studentid" class="form-control" placeholder="e.g., S101" required></div>
-                <div class="form-group full-width"><label for="studentname">Student Name</label><input type="text" id="studentname" class="form-control" placeholder="e.g., John Doe" required></div>
-                <div class="form-group"><label for="curryear">Current Year</label><input type="number" id="curryear" class="form-control" placeholder="e.g., 3" required></div>
-                <div class="form-group"><label for="cursemester">Current Semester</label><input type="number" id="cursemester" class="form-control" placeholder="e.g., 6" required></div>
-                <div class="form-group full-width"><label for="branch">Branch</label><input type="text" id="branch" class="form-control" placeholder="e.g., Computer Science" required></div>
+                <div class="form-group full-width"><label for="studentname">Student Name</label><input type="text" id="studentname" class="form-control" placeholder="e.g., John Doe"></div>
+                <div class="form-group"><label for="curryear">Current Year</label><input type="number" id="curryear" class="form-control" placeholder="e.g., 3"></div>
+                <div class="form-group"><label for="cursemester">Current Semester</label><input type="number" id="cursemester" class="form-control" placeholder="e.g., 6"></div>
+                <div class="form-group full-width"><label for="branch">Branch</label><input type="text" id="branch" class="form-control" placeholder="e.g., Computer Science"></div>
             </div>
-            <div class="form-actions"><button type="submit" class="btn btn-submit">Update Student</button><a href="dashboard.html" class="btn btn-back">Back</a></div>
+            <p class="update-message" th:if="${updatemessage}" th:text="${updatemessage}"></p>
+            <div class="form-actions"><button type="submit" class="btn btn-submit">Update Student</button><a th:href="@{/}" class="btn btn-back">Back</a></div>
         </form>
     </div>
 </div>

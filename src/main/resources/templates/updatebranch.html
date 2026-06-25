@@ -29,6 +29,8 @@
         .btn-submit { background-color: var(--theme); color: white; }
         .btn-back { background-color: #eceff1; color: #37474f; }
         :root[data-theme="dark"] .btn-back { background-color: #374151; color: #e5e7eb; }
+        .update-message {text-align: center;color:#e67e22;font-weight: 600;font-size: 16px;margin: 15px 0;
+        }
         @media (max-width: 500px) { .top-navbar { flex-direction: column; align-items: flex-start; gap: 10px; } .form-actions { flex-direction: column; } }
     </style>
 </head>
@@ -39,22 +41,30 @@
         <div class="theme-switch-wrapper"><span>Dark Mode</span><label class="theme-switch"><input type="checkbox" id="checkbox"><div class="slider"></div></label></div>
     </div>
     <div class="card">
-        <form id="branchForm">
-            <div class="form-group"><label for="branchid">Branch ID</label><input type="text" id="branchid" class="form-control" placeholder="e.g., B301" required></div>
-            <div class="form-group"><label for="name">Branch Name</label><input type="text" id="name" class="form-control" placeholder="e.g., Mechanical Engineering" required></div>
-            <div class="form-actions"><button type="submit" class="btn btn-submit">Update Branch</button><a href="dashboard.html" class="btn btn-back">Back</a></div>
+        <form id="branchForm" method="post" th:action="@{/updatebranchdata}">
+            <div class="form-group">
+                <label for="branchid">Branch ID</label>
+                <input type="text" name="branchid" id="branchid" class="form-control" placeholder="e.g., B301" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Branch Name</label>
+                <input type="text" name="branchname" id="name" class="form-control" placeholder="e.g., Mechanical Engineering" required>
+            </div>
+            <p class="update-message" th:if="${updatemessage}" th:text="${updatemessage}"></p>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-submit">Update Branch</button>
+                <a th:href="@{/}" class="btn btn-back">Back</a>
+            </div>
         </form>
     </div>
 </div>
 <script>
     const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-    if (localStorage.getItem('theme') === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); toggleSwitch.checked = true; }
+    if (localStorage.getItem('theme') === 'dark') { 
+        document.documentElement.setAttribute('data-theme', 'dark'); 
+        toggleSwitch.checked = true; 
+    }
     toggleSwitch.addEventListener('change', (e) => { const theme = e.target.checked ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); });
-    document.getElementById('branchForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert(`Branch updated!\nID: ${document.getElementById('branchid').value}\nName: ${document.getElementById('name').value}`);
-        window.location.href = 'dashboard.html';
-    });
 </script>
 </body>
 </html>

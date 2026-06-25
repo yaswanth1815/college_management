@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.practice.springBoot.entities.Branch;
 import com.practice.springBoot.entities.Faculty;
 import com.practice.springBoot.services.BranchService;
@@ -49,9 +48,9 @@ public class FacultyController {
     }
 
     @PostMapping("/deletefacultyfromtable")
-    public String deleteFaculty(String facultyids,RedirectAttributes redas){
-        String ss=facultyService.deleteFaculty(facultyids);
-        redas.addFlashAttribute("deleteids",ss);
+    public String deleteFaculty(String facultyid,RedirectAttributes redas){
+        String ss=facultyService.deleteFaculty(facultyid);
+        redas.addFlashAttribute("deletedids",ss);
         return "redirect:/opendelete";
     }
 }
