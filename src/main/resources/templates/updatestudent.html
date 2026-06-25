@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Student</title>
+    <style>
+        :root[data-theme="light"] { --bg: #f4f6f9; --card: #ffffff; --text: #2c3e50; --sub: #7f8c8d; --border: #cccccc; --input: #ffffff; --theme: #2563eb; }
+        :root[data-theme="dark"] { --bg: #121212; --card: #1e1e1e; --text: #f3f4f6; --sub: #9ca3af; --border: #444444; --input: #2d2d2d; --theme: #3b82f6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: 0.2s ease; }
+        body { background-color: var(--bg); color: var(--text); padding: 15px; overflow: hidden; }
+        .container { max-width: 500px; margin: 0 auto; }
+        .top-navbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 15px; }
+        .portal-heading h1 { font-size: 1.4rem; }
+        .portal-heading p { color: var(--sub); font-size: 0.8rem; }
+        .theme-switch-wrapper { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--sub); font-weight: 600; }
+        .theme-switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; border-radius: 20px; }
+        :root[data-theme="dark"] .slider { background-color: #4b5563; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: #fff; border-radius: 50%; }
+        input:checked + .slider:before { transform: translateX(20px); background-color: #10b981; }
+        .card { background: var(--card); border-radius: 8px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--theme); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .full-width { grid-column: span 2; }
+        label { font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; }
+        .form-control { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 5px; background-color: var(--input); color: var(--text); font-size: 0.9rem; outline: none; }
+        .form-control:focus { border-color: var(--theme); }
+        .form-actions { display: flex; gap: 10px; }
+        .btn { width: 100%; padding: 10px; font-size: 0.9rem; font-weight: 600; text-align: center; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; }
+        .btn-submit { background-color: var(--theme); color: white; }
+        .btn-back { background-color: #eceff1; color: #37474f; }
+        :root[data-theme="dark"] .btn-back { background-color: #374151; color: #e5e7eb; }
+        @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top-navbar">
+        <div class="portal-heading"><h1>Update Student</h1><p>Modify student information details</p></div>
+        <div class="theme-switch-wrapper"><span>Dark Mode</span><label class="theme-switch"><input type="checkbox" id="checkbox"><div class="slider"></div></label></div>
+    </div>
+    <div class="card">
+        <form id="studentForm">
+            <div class="form-grid">
+                <div class="form-group full-width"><label for="studentid">Roll Number</label><input type="text" id="studentid" class="form-control" placeholder="e.g., S101" required></div>
+                <div class="form-group full-width"><label for="studentname">Student Name</label><input type="text" id="studentname" class="form-control" placeholder="e.g., John Doe" required></div>
+                <div class="form-group"><label for="curryear">Current Year</label><input type="number" id="curryear" class="form-control" placeholder="e.g., 3" required></div>
+                <div class="form-group"><label for="cursemester">Current Semester</label><input type="number" id="cursemester" class="form-control" placeholder="e.g., 6" required></div>
+                <div class="form-group full-width"><label for="branch">Branch</label><input type="text" id="branch" class="form-control" placeholder="e.g., Computer Science" required></div>
+            </div>
+            <div class="form-actions"><button type="submit" class="btn btn-submit">Update Student</button><a href="dashboard.html" class="btn btn-back">Back</a></div>
+        </form>
+    </div>
+</div>
+<script>
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    if (localStorage.getItem('theme') === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); toggleSwitch.checked = true; }
+    toggleSwitch.addEventListener('change', (e) => { const theme = e.target.checked ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); });
+    document.getElementById('studentForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert(`Student updated!\nID: ${document.getElementById('studentid').value}\nName: ${document.getElementById('studentname').value}`);
+        window.location.href = 'dashboard.html';
+    });
+</script>
+</body>
+</html>

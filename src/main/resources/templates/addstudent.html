@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Student</title>
+    <style>
+        :root[data-theme="light"] {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #7f8c8d;
+            --toggle-bg: #cbd5e1;
+            --toggle-btn: #ffffff;
+            --input-bg: #ffffff;
+            --input-border: #cccccc;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+            --toggle-bg: #4b5563;
+            --toggle-btn: #10b981;
+            --input-bg: #2d2d2d;
+            --input-border: #444444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+            transition: background-color 0.3s ease,
+                        color 0.3s ease,
+                        border-color 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--toggle-bg);
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--toggle-btn);
+            border-radius: 50%;
+            transition: .3s;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border-top: 5px solid #2ecc71;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-submit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #2980b9;
+        }
+
+        .btn-back {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-back:hover {
+            background: #cbd5e1;
+        }
+
+        :root[data-theme="dark"] .btn-back {
+            background: #4b5563;
+            color: white;
+        }
+        .adding-message {
+            text-align: center;
+            color: green;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 768px) {
+            .top-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-header">
+            <h1>Add New Student</h1>
+
+            <div class="theme-switch-wrapper">
+                <span>Dark Mode</span>
+                <label class="theme-switch">
+                    <input type="checkbox" id="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="card">
+            <form id="studentForm" method="post" th:action="@{/addingstudenttotable}">
+                <div class="form-group">
+                    <label>Roll Number</label>
+                    <input name="studentroll" type="text" class="form-control" placeholder="e.g. S101" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Student Name</label>
+                    <input name="studentname" type="text" class="form-control" placeholder="Enter full name" required>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Studying Year</label>
+                        <select name="curryear" class="form-control" required>
+                            <option value="">Select Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Semester</label>
+                        <select name="currsemester" class="form-control" required>
+                            <option value="">Select Semester</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Branch ID</label>
+                    <input name="branch.branchid" type="text" class="form-control" placeholder="e.g. Computer Science" required>
+                </div>
+                <p class="adding-message" th:if="${addingmessage}" th:text="${addingmessage}"></p>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-submit">Submit</button>
+                    <a th:href="@{/}" class="btn btn-back">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const toggleSwitch = document.getElementById('checkbox');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            toggleSwitch.checked = true;
+        }
+
+        toggleSwitch.addEventListener('change', function () {
+            if (this.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Dashboard</title>
+
+    <style>
+        :root[data-theme="light"] {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #7f8c8d;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --shadow-hover: rgba(0, 0, 0, 0.1);
+            --toggle-bg: #cbd5e1;
+            --toggle-btn: #ffffff;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --shadow-hover: rgba(0, 0, 0, 0.6);
+            --toggle-bg: #4b5563;
+            --toggle-btn: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease,
+                        color 0.3s ease,
+                        border-color 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Header */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .header-text h1 {
+            font-size: 2.3rem;
+            margin-bottom: 5px;
+        }
+
+        .header-text p {
+            color: var(--text-sub);
+            font-size: 1rem;
+        }
+
+        /* Theme Toggle */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--toggle-bg);
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--toggle-btn);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .mode-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-sub);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 15px var(--shadow-hover);
+        }
+
+        .student-card {
+            border-top: 5px solid #2ecc71;
+        }
+
+        .faculty-card {
+            border-top: 5px solid #9b59b6;
+        }
+
+        .branch-card {
+            border-top: 5px solid #e67e22;
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-add {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            display: inline-flex;
+            justify-content: center; 
+            align-items: center;
+            
+        }
+
+        .btn-add:hover {
+            background-color: #c8e6c9;
+        }
+
+        .btn-update {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-update:hover {
+            background-color: #bbdefb;
+        }
+
+        .btn-delete {
+            background-color: #ffebee;
+            color: #c62828;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-delete:hover {
+            background-color: #ffcdd2;
+        }
+
+        .btn-show {
+            background-color: #eceff1;
+            color: #37474f;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-show:hover {
+            background-color: #cfd8dc;
+        }
+
+        /* Dark Mode Button Colors */
+        :root[data-theme="dark"] .btn-add {
+            background-color: #1b431c;
+            color: #a5d6a7;
+        }
+
+        :root[data-theme="dark"] .btn-update {
+            background-color: #0d3c61;
+            color: #90caf9;
+        }
+
+        :root[data-theme="dark"] .btn-delete {
+            background-color: #511c1c;
+            color: #ef9a9a;
+        }
+
+        :root[data-theme="dark"] .btn-show {
+            background-color: #374151;
+            color: #e5e7eb;
+        }
+
+        :root[data-theme="dark"] .btn-add:hover {
+            background-color: #225724;
+        }
+
+        :root[data-theme="dark"] .btn-update:hover {
+            background-color: #114b79;
+        }
+
+        :root[data-theme="dark"] .btn-delete:hover {
+            background-color: #662323;
+        }
+
+        :root[data-theme="dark"] .btn-show:hover {
+            background-color: #4b5563;
+        }
+        a{
+            text-decoration: none;
+        }
+
+        @media(max-width:900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                overflow-y: auto;
+            }
+
+            .top-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header class="top-header">
+
+        <div class="header-text">
+            <h1>College Management Portal</h1>
+            <p>Select an action below to manage records</p>
+        </div>
+
+        <div class="theme-switch-wrapper">
+            <span class="mode-text">Dark Mode</span>
+
+            <label class="theme-switch">
+                <input type="checkbox" id="checkbox">
+                <div class="slider"></div>
+            </label>
+        </div>
+
+    </header>
+
+    <div class="dashboard-grid">
+
+        <div class="card student-card">
+            <h2>🎓 Student Management</h2>
+
+            <div class="btn-group">
+                <a class="btn btn-add" th:href="@{/openaddstudent}">Add Student</a>
+                <a class="btn btn-update" th:href="@{/openupdatestudents}">Update Student</a>
+                <a class="btn btn-delete" th:href="@{/opendelete}">Delete Student</a>
+                <a class="btn btn-show" th:href="@{/openshowstudents}">Show Students</a>
+            </div>
+        </div>
+
+        <div class="card faculty-card">
+            <h2>👨‍🏫 Faculty Management</h2>
+
+            <div class="btn-group">
+                <a class="btn btn-add" th:href="@{/openaddfaculty}">Add Faculty</a>
+                <a class="btn btn-update" th:href="@{/openupdatefaculties}" >Update Faculty</a>
+                <a class="btn btn-delete" th:href="@{/opendelete}" >Delete Faculty</a>
+                <a class="btn btn-show" th:href="@{/openshowfaculty}" >Show Faculty</a>
+            </div>
+        </div>
+
+        <div class="card branch-card">
+            <h2>🏢 Branch Management</h2>
+
+            <div class="btn-group">
+                <a class="btn btn-add" th:href="@{/openaddbranch}">Add Branch</a>
+                <a class="btn btn-update" th:href="@{/openupdatebranches}">Update Branch</a>
+                <a class="btn btn-delete" th:href="@{/opendelete}">Delete Branch</a>
+                <a class="btn btn-show" th:href="@{/openshowbranch}">Show Branch</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const toggleSwitch = document.querySelector('#checkbox');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        if (currentTheme === 'dark') {
+            toggleSwitch.checked = true;
+        }
+    }
+
+    function switchTheme(e) {
+        if (e.target.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    toggleSwitch.addEventListener('change', switchTheme);
+
+    function handleAction(actionName) {
+        alert(actionName + " button clicked!");
+    }
+</script>
+
+</body>
+</html>

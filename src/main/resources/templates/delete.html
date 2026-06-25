@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Delete Records Portal</title>
+    <style>
+        /* Define Light and Dark Themes using CSS Variables */
+        :root[data-theme="light"] {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #7f8c8d;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --shadow-hover: rgba(0, 0, 0, 0.1);
+            --toggle-bg: #cbd5e1;
+            --toggle-btn: #ffffff;
+            --input-bg: #ffffff;
+            --input-border: #cccccc;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --shadow-hover: rgba(0, 0, 0, 0.6);
+            --toggle-bg: #4b5563;
+            --toggle-btn: #10b981;
+            --input-bg: #2d2d2d;
+            --input-border: #444444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px; /* Reduced padding to save screen space */
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Top Header Navigation Line Grid (Keeps everything on the same level) */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--input-border);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .portal-heading h1 {
+            font-size: 1.8rem; /* Slightly smaller to guarantee fit */
+            color: var(--text-main);
+        }
+
+        .portal-heading p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            margin-top: 2px;
+        }
+
+        /* Theme Toggle Switch */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--toggle-bg);
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+            background-color: var(--toggle-btn);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* Responsive Layout Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; /* Slightly tighter gap */
+            margin-bottom: 25px;
+        }
+
+        /* Danger/Delete Card Styling */
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 18px; /* Tighter inner card padding */
+            box-shadow: 0 4px 6px var(--shadow);
+            border-top: 4px solid #c62828;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 12px var(--shadow-hover);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Form Layout */
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            resize: none; /* Prevents user from manual resizing which breaks layout */
+        }
+
+        .form-control:focus {
+            border-color: #ef9a9a;
+            box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
+        }
+
+        .hint {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+        }
+
+        /* Action Buttons */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: center;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        .btn-delete {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .btn-delete:hover { background-color: #ffcdd2; }
+        :root[data-theme="dark"] .btn-delete { background-color: #511c1c; color: #ef9a9a; }
+        :root[data-theme="dark"] .btn-delete:hover { background-color: #662323; }
+
+        .footer-nav {
+            text-align: center;
+        }
+
+        .btn-back {
+            display: inline-block;
+            width: auto;
+            background-color: #eceff1;
+            color: #37474f;
+            padding: 10px 30px;
+        }
+        .btn-back:hover { background-color: #cfd8dc; }
+        :root[data-theme="dark"] .btn-back { background-color: #374151; color: #e5e7eb; }
+        :root[data-theme="dark"] .btn-back:hover { background-color: #4b5563; }
+
+        .delete-message-box{
+            width: 100%;
+            margin: 20px 0;
+            padding: 18px;
+            text-align: center;
+            border-radius: 10px;
+            background-color: #e8f5e9;
+            color: black;
+            border: 1px solid #c62828;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        :root[data-theme="dark"] .delete-message-box{
+            background-color: #482121;;
+            color: #95d5b2;
+            border-color: #2d6a4f;
+        }
+        /* Media Query for mobile screen stacked view formatting */
+        @media (max-width: 600px) {
+            .top-navbar { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .theme-switch-wrapper { align-self: flex-end; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="top-navbar">
+        <div class="portal-heading">
+            <h1>Bulk Record Removal Center</h1>
+            <p>Enter primary keys separated by commas</p>
+        </div>
+        
+        <div class="theme-switch-wrapper">
+            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-sub);">Dark Mode</span>
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider"></div>
+            </label>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        
+        <div class="card">
+            <h2>🗑️ Remove Students</h2>
+            <form method="post" th:action="@{/deletestudentfromtable}">
+                <div class="form-group">
+                    <label for="studentids">Student IDs</label>
+                    <textarea name="studentids" id="studentids" class="form-control" rows="2" placeholder="S101, S102, S103" required></textarea>
+                    <span class="hint">Use commas to separate multiple IDs.</span>
+                </div>
+                <button type="submit" class="btn btn-delete">Remove Students</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>🗑️ Remove Faculties</h2>
+            <form method="post" th:action="@{/deletefacultyfromtable}">
+                <div class="form-group">
+                    <label for="facultyids">Faculty IDs</label>
+                    <textarea id="facultyids" class="form-control" rows="2" placeholder="F201, F202, F203" required></textarea>
+                    <span class="hint">Use commas to separate multiple IDs.</span>
+                </div>
+                <button type="submit" class="btn btn-delete">Remove Faculties</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>🗑️ Remove Branches</h2>
+            <form>
+                <div class="form-group">
+                    <label for="branchids">Branch IDs</label>
+                    <textarea  id="branchids" class="form-control" rows="2" placeholder="B301, B302" required></textarea>
+                    <span class="hint">Use commas to separate multiple IDs.</span>
+                </div>
+                <button type="submit" class="btn btn-delete">Remove Branches</button>
+            </form>
+        </div>
+
+    </div>
+    <p class="delete-message-box" th:if="${deletedids}" th:text="${deletedids}"></p>
+    <div class="footer-nav">
+        <a th:href="@{/}" class="btn btn-back">← Return to Dashboard</a>
+    </div>
+</div>
+
+<script>
+    // Theme Management Logic
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        if (currentTheme === 'dark') {
+            toggleSwitch.checked = true;
+        }
+    }
+
+    toggleSwitch.addEventListener('change', (e) => {
+        const theme = e.target.checked ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    });
+
+    // Process Bulk Form Deletions
+    function handleBulkDelete(event, entityType, textareaId) {
+        event.preventDefault();
+        const rawValue = document.getElementById(textareaId).value;
+        
+        const idArray = rawValue.split(',')
+                                .map(id => id.trim())
+                                .filter(id => id.length > 0);
+        
+        if (idArray.length === 0) {
+            alert("Please enter at least one valid ID.");
+            return;
+        }
+
+        const cleanPayloadString = idArray.join(',');
+        const confirmDelete = confirm(`Are you sure you want to permanently delete these ${idArray.length} record(s) from ${entityType}?\n\nPayload: ${cleanPayloadString}`);
+        
+        if (confirmDelete) {
+            console.log(`Sending payload to backend: ${cleanPayloadString}`);
+            alert(`Bulk data string sent successfully for processing:\n"${cleanPayloadString}"`);
+            event.target.reset();
+        }
+    }
+</script>
+
+</body>
+</html>

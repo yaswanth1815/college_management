@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Branch</title>
+    <style>
+        :root[data-theme="light"] { --bg: #f4f6f9; --card: #ffffff; --text: #2c3e50; --sub: #7f8c8d; --border: #cccccc; --input: #ffffff; --theme: #e67e22; }
+        :root[data-theme="dark"] { --bg: #121212; --card: #1e1e1e; --text: #f3f4f6; --sub: #9ca3af; --border: #444444; --input: #2d2d2d; --theme: #d35400; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: 0.2s ease; }
+        body { background-color: var(--bg); color: var(--text); padding: 20px; overflow: hidden; }
+        .container { max-width: 500px; margin: 0 auto; }
+        .top-navbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; }
+        .portal-heading h1 { font-size: 1.5rem; }
+        .portal-heading p { color: var(--sub); font-size: 0.85rem; }
+        .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 600; color: var(--sub); }
+        .theme-switch { position: relative; display: inline-block; width: 46px; height: 22px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; border-radius: 20px; }
+        :root[data-theme="dark"] .slider { background-color: #4b5563; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: #fff; border-radius: 50%; }
+        input:checked + .slider:before { transform: translateX(24px); background-color: #10b981; }
+        .card { background: var(--card); border-radius: 8px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--theme); }
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
+        label { font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background-color: var(--input); color: var(--text); font-size: 0.95rem; outline: none; }
+        .form-control:focus { border-color: var(--theme); }
+        .form-actions { display: flex; gap: 12px; margin-top: 20px; }
+        .btn { width: 100%; padding: 10px; font-size: 0.95rem; font-weight: 600; text-align: center; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; }
+        .btn-submit { background-color: var(--theme); color: white; }
+        .btn-back { background-color: #eceff1; color: #37474f; }
+        :root[data-theme="dark"] .btn-back { background-color: #374151; color: #e5e7eb; }
+        @media (max-width: 500px) { .top-navbar { flex-direction: column; align-items: flex-start; gap: 10px; } .form-actions { flex-direction: column; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top-navbar">
+        <div class="portal-heading"><h1>Update Branch</h1><p>Modify department names</p></div>
+        <div class="theme-switch-wrapper"><span>Dark Mode</span><label class="theme-switch"><input type="checkbox" id="checkbox"><div class="slider"></div></label></div>
+    </div>
+    <div class="card">
+        <form id="branchForm">
+            <div class="form-group"><label for="branchid">Branch ID</label><input type="text" id="branchid" class="form-control" placeholder="e.g., B301" required></div>
+            <div class="form-group"><label for="name">Branch Name</label><input type="text" id="name" class="form-control" placeholder="e.g., Mechanical Engineering" required></div>
+            <div class="form-actions"><button type="submit" class="btn btn-submit">Update Branch</button><a href="dashboard.html" class="btn btn-back">Back</a></div>
+        </form>
+    </div>
+</div>
+<script>
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    if (localStorage.getItem('theme') === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); toggleSwitch.checked = true; }
+    toggleSwitch.addEventListener('change', (e) => { const theme = e.target.checked ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); });
+    document.getElementById('branchForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert(`Branch updated!\nID: ${document.getElementById('branchid').value}\nName: ${document.getElementById('name').value}`);
+        window.location.href = 'dashboard.html';
+    });
+</script>
+</body>
+</html>
