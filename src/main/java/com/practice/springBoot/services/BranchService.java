@@ -3,8 +3,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import com.practice.springBoot.entities.Branch;
 import com.practice.springBoot.repositories.BranchRepository;
 import com.practice.springBoot.repositories.FacultyRepository;

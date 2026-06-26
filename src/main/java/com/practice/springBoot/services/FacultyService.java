@@ -38,15 +38,24 @@ public class FacultyService {
                 facultyRepository.deleteById(id);
             }
             else{
+                count2++;
                 notdele=notdele+" "+id;
             }
         }
         if(count1>0){
             mainStr=mainStr+" Deleted ID's:" +dele;
         }
-        else{
+        if(count2>0){
             mainStr=mainStr+" Not Deleted ID's"+notdele;
         }
         return mainStr;
+    }
+
+    public Faculty findFacultyById(String facultyid) {
+        Optional<Faculty> facs=facultyRepository.findById(facultyid);
+        if(facs.isPresent()){
+            return facs.get();
+        }
+        return null;
     }
 }

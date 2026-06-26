@@ -41,14 +41,15 @@
         <div class="theme-switch-wrapper"><span>Dark Mode</span><label class="theme-switch"><input type="checkbox" id="checkbox"><div class="slider"></div></label></div>
     </div>
     <div class="card">
-        <form id="facultyForm">
+        <form id="facultyForm" method="post" th:action="@{/updatefacultytable}">
             <div class="form-grid">
-                <div class="form-group"><label for="facultyid">Faculty ID</label><input type="text" id="facultyid" class="form-control" placeholder="e.g., F201" required></div>
-                <div class="form-group"><label for="name">Name</label><input type="text" id="name" class="form-control" placeholder="e.g., Dr. Smith" required></div>
-                <div class="form-group"><label for="branch">Branch</label><input type="text" id="branch" class="form-control" placeholder="e.g., Information Technology" required></div>
-                <div class="form-group"><label for="designation">Designation</label><input type="text" id="designation" class="form-control" placeholder="e.g., Associate Professor" required></div>
+                <div class="form-group"><label  for="facultyid">Faculty ID</label><input name="facultyid" type="text" id="facultyid" class="form-control" placeholder="e.g., F201" required></div>
+                <div class="form-group"><label  for="name">Name</label><input type="text" name="facultyname" id="name" class="form-control" placeholder="e.g., Dr. Smith"></div>
+                <div class="form-group"><label  for="branch">Branch ID</label><input type="text" name="branch" id="branch" class="form-control" placeholder="e.g., Information Technology"></div>
+                <div class="form-group"><label for="designation">Designation</label><input type="text" name="designation" id="designation" class="form-control" placeholder="e.g., Associate Professor"></div>
             </div>
-            <div class="form-actions"><button type="submit" class="btn btn-submit">Update Faculty</button><a href="dashboard.html" class="btn btn-back">Back</a></div>
+            <p class="update-message" th:if="${updatemessage}" th:text="${updatemessage}"></p>
+            <div class="form-actions"><button type="submit" class="btn btn-submit">Update Faculty</button><a th:href="@{/}" class="btn btn-back">Back</a></div>
         </form>
     </div>
 </div>
@@ -56,11 +57,6 @@
     const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
     if (localStorage.getItem('theme') === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); toggleSwitch.checked = true; }
     toggleSwitch.addEventListener('change', (e) => { const theme = e.target.checked ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); });
-    document.getElementById('facultyForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert(`Faculty updated!\nID: ${document.getElementById('facultyid').value}\nName: ${document.getElementById('name').value}`);
-        window.location.href = 'dashboard.html';
-    });
 </script>
 </body>
 </html>

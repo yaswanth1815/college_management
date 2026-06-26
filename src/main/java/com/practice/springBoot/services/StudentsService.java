@@ -49,4 +49,13 @@ public class StudentsService {
         }
         return  returnthis;
     }
+
+    public Students findStudentById(String id) {
+        Optional<Students> stds=studentsRepository.findById(id);
+        if(stds.isPresent()){
+            return stds.get();
+        }
+        return null;
+    }
+
 }
