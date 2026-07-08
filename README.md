@@ -6,7 +6,7 @@ A Spring Boot project for managing college operations and student information.
 
 The application is currently deployed and accessible at:
 
-**[http://65.2.10.49:8081](http://13.201.77.225:8081)**
+**[http://13.201.77.225:8081](http://13.201.77.225:8081)**
 
 Click the link above to open the website.
 
